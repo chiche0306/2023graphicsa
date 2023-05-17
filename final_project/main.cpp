@@ -6,8 +6,8 @@ GLMmodel * body = NULL;
 GLMmodel * ass = NULL;
 GLMmodel * uparmR = NULL;
 GLMmodel * armR = NULL;
-int show[5] = {1,1,1,1,1}; ///show[1]來決定要不要顯示
-int ID=0;
+int show[5] = {0,0,0,0,1}; ///show[1]來決定要不要顯示
+int ID = 4;
 void keyboard(unsigned char key,int x,int y)
 {
     if(key=='0') ID = 0;
@@ -24,6 +24,7 @@ void keyboard(unsigned char key,int x,int y)
 }
 FILE * fout = NULL;
 FILE * fin = NULL;
+float angle=0;
 float teapotX=0 , teapotY=0;
 void display()
 {
@@ -45,21 +46,35 @@ void display()
         else glColor3f(1,1,1);
         if (show[1]) glmDraw(body, GLM_MATERIAL);
 
-        glPushMatrix();
-            glTranslatef(teapotX,teapotY,0);
+        glPushMatrix();///屁股
+            ///glTranslatef(-0.013333, 0.646666, 0);
+            glRotatef(angle, 0, 0, 1);
+            glTranslatef(0.013333, -0.646666, 0);
+            ///glTranslatef(teapotX,-teapotY,0);
+            ///glTranslatef(teapotX,teapotY,0);
+
             if (ID==2) glColor3f(1,0,0);
             else glColor3f(1,1,1);
             if (show[2]) glmDraw(ass, GLM_MATERIAL);
         glPopMatrix();
 
-        if (ID==3) glColor3f(1,0,0);
-        else glColor3f(1,1,1);
-        if (show[3]) glmDraw(uparmR, GLM_MATERIAL);
+            if (ID==3) glColor3f(1,0,0);
+            else glColor3f(1,1,1);
+            if (show[3]) glmDraw(uparmR, GLM_MATERIAL);
 
-        if (ID==4) glColor3f(1,0,0);
-        else glColor3f(1,1,1);
-        if (show[4]) glmDraw(armR, GLM_MATERIAL);
+        glPushMatrix(); ///下手臂
+            glTranslatef(-1.946665, +0.120001, 0);
+            glRotatef(angle, 0, 0, 1);
+            glTranslatef(1.946665, -0.120001, 0);
+            ///glTranslatef(teapotX,teapotY,0);
+            if (ID==4) glColor3f(1,0,0);
+            else glColor3f(1,1,1);
+            if (show[4]) glmDraw(armR, GLM_MATERIAL);
+        glPopMatrix();
+
     glPopMatrix();
+    glColor3f(0, 1, 0);
+    glutSolidTeapot(0.02);
     glutSwapBuffers();
 }
 int oldX = 0 ,oldY = 0;
@@ -69,6 +84,7 @@ void motion(int x, int  y)
     teapotY -= (y - oldY)/150.0;
     oldX = x;
     oldY = y;
+    angle = x;
     printf("glTranslatef(%f, %f, 0);\n",teapotX,teapotY);
     glutPostRedisplay();
 }
