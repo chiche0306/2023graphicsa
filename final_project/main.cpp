@@ -6,14 +6,20 @@ GLMmodel * body = NULL;
 GLMmodel * ass = NULL;
 GLMmodel * uparmR = NULL;
 GLMmodel * armR = NULL;
-int show[5] = {0,1,0,0,0}; ///show[1]來決定要不要顯示
+int show[5] = {1,1,1,1,1}; ///show[1]來決定要不要顯示
+int ID=0;
 void keyboard(unsigned char key,int x,int y)
 {
-    if(key=='0') show[0] = !show[0];
-    if(key=='1') show[1] = !show[1];
-    if(key=='2') show[2] = !show[2];
-    if(key=='3') show[3] = !show[3];
-    if(key=='4') show[4] = !show[4];
+    if(key=='0') ID = 0;
+    if(key=='1') ID = 1;
+    if(key=='2') ID = 2;
+    if(key=='3') ID = 3;
+    if(key=='4') ID = 4;
+    ///if(key=='0') show[0] = !show[0];
+    ///if(key=='1') show[1] = !show[1];
+    ///if(key=='2') show[2] = !show[2];
+    ///if(key=='3') show[3] = !show[3];
+    ///if(key=='4') show[4] = !show[4];
     glutPostRedisplay();
 }
 FILE * fout = NULL;
@@ -31,14 +37,27 @@ void display()
             uparmR = glmReadOBJ("model/uparmR.obj");
             armR = glmReadOBJ("model/armR.obj");
         }
+        if (ID==0) glColor3f(1,0,0);
+        else glColor3f(1,1,1);
         if (show[0]) glmDraw(head, GLM_MATERIAL);
+
+        if (ID==1) glColor3f(1,0,0);
+        else glColor3f(1,1,1);
         if (show[1]) glmDraw(body, GLM_MATERIAL);
+
         glPushMatrix();
             glTranslatef(teapotX,teapotY,0);
+            if (ID==2) glColor3f(1,0,0);
+            else glColor3f(1,1,1);
             if (show[2]) glmDraw(ass, GLM_MATERIAL);
         glPopMatrix();
 
+        if (ID==3) glColor3f(1,0,0);
+        else glColor3f(1,1,1);
         if (show[3]) glmDraw(uparmR, GLM_MATERIAL);
+
+        if (ID==4) glColor3f(1,0,0);
+        else glColor3f(1,1,1);
         if (show[4]) glmDraw(armR, GLM_MATERIAL);
     glPopMatrix();
     glutSwapBuffers();
